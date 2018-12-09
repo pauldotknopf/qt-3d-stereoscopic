@@ -1,33 +1,28 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
+import QtMultimedia 5.9
+import Stereo3D 1.0
 
 ApplicationWindow {
     visible: true
-    width: 640
-    height: 480
-    title: qsTr("Tabs")
+    title: qsTr("Line by line")
 
-    SwipeView {
-        id: swipeView
-        anchors.fill: parent
-        currentIndex: tabBar.currentIndex
-
-        Page1Form {
-        }
-
-        Page2Form {
-        }
+    MediaPlayer {
+        id: mediaplayer
+        source: "file:///home/pknopf/sample-video.mp4"
+        autoPlay: true
     }
 
-    footer: TabBar {
-        id: tabBar
-        currentIndex: swipeView.currentIndex
+    VideoOutput {
+        anchors.fill: parent
+        source: mediaplayer
+    }
 
-        TabButton {
-            text: qsTr("Page 1")
-        }
-        TabButton {
-            text: qsTr("Page 2")
-        }
+    Stereo3DVideoOutput {
+
+    }
+
+    Component.onCompleted: {
+        console.log('done')
     }
 }

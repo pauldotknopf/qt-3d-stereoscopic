@@ -1,1 +1,3 @@
 module Stereo3D
+plugin declarative_stereo3d
+classname QStereo3DDeclarativeModule

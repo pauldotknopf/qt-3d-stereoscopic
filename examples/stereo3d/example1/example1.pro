@@ -1,5 +1,5 @@
 TARGET = example1
-QT += quick stereo3d
+QT += quick
 CONFIG += c++11
 
 SOURCES += \
