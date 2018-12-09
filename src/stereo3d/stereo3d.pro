@@ -4,7 +4,7 @@ QT -= core gui
 HEADERS += \
     modtest.h \
     modtestprivate_p.h \
-    modglobal.h
+    stereo3dglobal.h
 
 SOURCES += \
     modtest.cpp \
