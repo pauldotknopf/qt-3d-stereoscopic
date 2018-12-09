@@ -1,3 +1,3 @@
 TEMPLATE = subdirs
 
-SUBDIRS = mod
+SUBDIRS = stereo3d

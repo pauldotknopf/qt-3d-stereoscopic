@@ -1,4 +1,4 @@
 TEMPLATE = subdirs
 
 SUBDIRS += \
-    mod/example1
+    stereo3d/example1

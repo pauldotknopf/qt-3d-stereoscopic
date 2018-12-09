@@ -1,7 +1,7 @@
 #ifndef MODTESTPRIVATE_P_H
 #define MODTESTPRIVATE_P_H
 
-#include <Mod/modglobal.h>
+#include <Stereo3D/modglobal.h>
 
 class Q_MOD_EXPORT ModTestPrivate
 {

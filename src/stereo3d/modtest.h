@@ -1,7 +1,7 @@
 #ifndef MODTEST_H
 #define MODTEST_H
 
-#include <Mod/modglobal.h>
+#include <Stereo3D/modglobal.h>
 
 class Q_MOD_EXPORT ModTest
 {

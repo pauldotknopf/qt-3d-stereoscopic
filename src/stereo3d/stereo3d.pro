@@ -1,4 +1,4 @@
-TARGET = Mod
+TARGET = Stereo3D
 QT -= core gui
 
 HEADERS += \

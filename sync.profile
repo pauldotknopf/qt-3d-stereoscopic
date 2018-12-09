@@ -1,3 +1,3 @@
 %modules = (
-    "Mod" => "$basedir/src/mod",
+    "Stereo3D" => "$basedir/src/stereo3d",
 );
