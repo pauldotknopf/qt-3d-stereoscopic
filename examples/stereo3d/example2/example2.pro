@@ -1,11 +1,10 @@
 TARGET = example1
-QT += quick
-CONFIG += c++11
+TEMPLATE = app
+
+QT += stereo3d
 
 SOURCES += \
-        main.cpp
-
-RESOURCES += qml.qrc
+    main.cpp
 
 target.path = $$[QT_INSTALL_EXAMPLES]/stereo3d/example1
 INSTALLS += target
