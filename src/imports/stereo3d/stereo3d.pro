@@ -1,4 +1,4 @@
-QT += qml stereo3d stereo3d-private
+QT += qml stereo3d stereo3d-private multimedia-private
 
 load(qml_plugin)
 

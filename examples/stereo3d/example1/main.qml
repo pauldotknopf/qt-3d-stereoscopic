@@ -13,16 +13,16 @@ ApplicationWindow {
         autoPlay: true
     }
 
-    VideoOutput {
-        anchors.fill: parent
-        source: mediaplayer
+    Stereo3DVideoOutput {
+        id: threeDMuxer
     }
 
-    Stereo3DVideoOutput {
-
+    VideoOutput {
+        anchors.fill: parent
+        source: threeDMuxer
     }
 
     Component.onCompleted: {
-        console.log('done')
+        console.log('don2e')
     }
 }

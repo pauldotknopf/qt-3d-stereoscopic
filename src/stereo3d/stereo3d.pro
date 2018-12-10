@@ -1,14 +1,18 @@
 TARGET = Stereo3D
-QT -= core gui
+QT += multimedia multimedia-private
 
 HEADERS += \
     modtest.h \
     modtestprivate_p.h \
-    stereo3dglobal.h
+    stereo3dglobal.h \
+    qstereo3dmediaobject.h \
+    qstereo3dmediaservice.h
 
 SOURCES += \
     modtest.cpp \
-    modtestprivate_p.cpp
+    modtestprivate_p.cpp \
+    qstereo3dmediaobject.cpp \
+    qstereo3dmediaservice.cpp
 
 load(qt_module)
 
