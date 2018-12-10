@@ -2,26 +2,30 @@
 #define QDECLARATIVE_STEREO3DVIDEOOUTPUT_P_H
 
 #include <QtQml/qqml.h>
-#include <QPointer>
-
-#include <Stereo3D/QStereo3DMediaObject>
+#include <QAbstractVideoSurface>
+#include <QVideoSurfaceFormat>
 
 class QDeclarativeStereo3DVideoOutput : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QObject *mediaObject READ mediaObject NOTIFY mediaObjectChanged SCRIPTABLE false DESIGNABLE false)
+    Q_PROPERTY(QAbstractVideoSurface* videoSurface READ videoSurface WRITE setVideoSurface NOTIFY videoSurfaceChanged)
 
 public:
     QDeclarativeStereo3DVideoOutput(QObject *parent = nullptr);
     ~QDeclarativeStereo3DVideoOutput();
 
-    QObject *mediaObject() { return nullptr; }
+    QAbstractVideoSurface* videoSurface();
+    void setVideoSurface(QAbstractVideoSurface* videoSurface);
 
 signals:
-    void mediaObjectChanged();
+    void videoSurfaceChanged();
 
 private:
-    QPointer<QMediaObject> m_mediaObject;
+    QAbstractVideoSurface* m_videoSurface;
+
+private slots:
+    void nativeResolutionChanged(const QSize& size);
+    void surfaceFormatChanged(const QVideoSurfaceFormat &format);
 };
 
 #endif // QDECLARATIVE_STEREO3DVIDEOOUTPUT_P_H

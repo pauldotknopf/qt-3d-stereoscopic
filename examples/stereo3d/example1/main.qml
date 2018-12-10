@@ -20,6 +20,12 @@ ApplicationWindow {
     VideoOutput {
         anchors.fill: parent
         source: threeDMuxer
+        onHeightChanged: {
+            //console.log('height: ' + height)
+        }
+        onWidthChanged: {
+            //console.log('width: ' + width)
+        }
     }
 
     Component.onCompleted: {
