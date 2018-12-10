@@ -23,12 +23,35 @@ QList<QVideoFrame::PixelFormat> QDeclarativeStereo3DVideoSurface::supportedPixel
     return QList<QVideoFrame::PixelFormat>() << QVideoFrame::Format_RGB565;
 }
 
-bool QDeclarativeStereo3DVideoSurface::present(const QVideoFrame &frame)
+bool QDeclarativeStereo3DVideoSurface::present(const QVideoFrame& frame)
 {
-    if(m_isLeft) {
+    if (m_isLeft) {
         return m_control->_q_presentLeftFrame(frame);
     }
     return m_control->_q_presentRightFrame(frame);
+}
+
+bool QDeclarativeStereo3DVideoSurface::start(const QVideoSurfaceFormat& format)
+{
+    bool result = QAbstractVideoSurface::start(format);
+    if(result) {
+        if (m_isLeft) {
+            m_control->_q_leftSurfaceStart(format);
+        } else {
+            m_control->_q_rightSurfaceStart(format);
+        }
+    }
+    return result;
+}
+
+void QDeclarativeStereo3DVideoSurface::stop()
+{
+    QAbstractVideoSurface::stop();
+    if (m_isLeft) {
+        m_control->_q_leftSurfaceStop();
+    } else {
+        m_control->_q_rightSurfaceStop();
+    }
 }
 
 QDeclarativeStereo3DVideoOutput::QDeclarativeStereo3DVideoOutput(QObject *parent)
@@ -61,13 +84,6 @@ void QDeclarativeStereo3DVideoOutput::setVideoSurface(QAbstractVideoSurface* vid
         return;
     }
     m_videoSurface = videoSurface;
-    if(m_videoSurface != nullptr) {
-        QObject::connect(m_videoSurface, &QAbstractVideoSurface::nativeResolutionChanged, this, &QDeclarativeStereo3DVideoOutput::nativeResolutionChanged);
-        QObject::connect(m_videoSurface, &QAbstractVideoSurface::surfaceFormatChanged, this, &QDeclarativeStereo3DVideoOutput::surfaceFormatChanged);
-    }
-    QVideoSurfaceFormat format(QSize(100,100), QVideoFrame::PixelFormat::Format_YV12);
-    bool result = m_videoSurface->start(format);
-    qDebug("%d",  result);
     emit videoSurfaceChanged();
 }
 
@@ -208,14 +224,52 @@ void QDeclarativeStereo3DVideoOutput::_q_updateRightMediaObject()
     }
 }
 
+void QDeclarativeStereo3DVideoOutput::_q_updateVideoSurfaceFormat()
+{
+    if (!m_leftSurfaceFormat.isValid() || !m_rightSurfaceFormat.isValid()) {
+        m_videoSurface->stop();
+        return;
+    }
+    // TODO: Check if they are the same.
+    m_videoSurface->start(m_leftSurfaceFormat);
+}
+
+void QDeclarativeStereo3DVideoOutput::_q_leftSurfaceStart(const QVideoSurfaceFormat& format)
+{
+    m_leftSurfaceFormat = format;
+    _q_updateVideoSurfaceFormat();
+}
+
 bool QDeclarativeStereo3DVideoOutput::_q_presentLeftFrame(const QVideoFrame& frame)
 {
-    qWarning("left");
-    return true;
+    if(m_videoSurface->isActive()) {
+        return m_videoSurface->present(frame);
+    }
+    return false;
+}
+
+void QDeclarativeStereo3DVideoOutput::_q_leftSurfaceStop()
+{
+    m_leftSurfaceFormat = QVideoSurfaceFormat();
+    _q_updateVideoSurfaceFormat();
+}
+
+void QDeclarativeStereo3DVideoOutput::_q_rightSurfaceStart(const QVideoSurfaceFormat& format)
+{
+    m_rightSurfaceFormat = format;
+    _q_updateVideoSurfaceFormat();
 }
 
 bool QDeclarativeStereo3DVideoOutput::_q_presentRightFrame(const QVideoFrame& frame)
 {
-    qWarning("right");
-    return true;
+    if(m_videoSurface->isActive()) {
+        return m_videoSurface->present(frame);
+    }
+    return false;
+}
+
+void QDeclarativeStereo3DVideoOutput::_q_rightSurfaceStop()
+{
+    m_rightSurfaceFormat = QVideoSurfaceFormat();
+    _q_updateVideoSurfaceFormat();
 }

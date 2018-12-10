@@ -18,6 +18,8 @@ public:
 
     QList<QVideoFrame::PixelFormat> supportedPixelFormats(QAbstractVideoBuffer::HandleType handleType = QAbstractVideoBuffer::NoHandle) const;
     bool present(const QVideoFrame &frame);
+    bool start(const QVideoSurfaceFormat &format);
+    void stop();
 
 private:
     QDeclarativeStereo3DVideoOutput* m_control;
@@ -56,11 +58,13 @@ private:
     QPointer<QDeclarativeStereo3DVideoSurface> m_leftSurface;
     QPointer<QMediaObject> m_leftMediaObject;
     QPointer<QMediaService> m_leftMediaService;
+    QVideoSurfaceFormat m_leftSurfaceFormat;
 
     QPointer<QObject> m_rightSource;
     QPointer<QDeclarativeStereo3DVideoSurface> m_rightSurface;
     QPointer<QMediaObject> m_rightMediaObject;
     QPointer<QMediaService> m_rightMediaService;
+    QVideoSurfaceFormat m_rightSurfaceFormat;
 
     QScopedPointer<QDeclarativeVideoBackend> m_backend;
 
@@ -69,10 +73,15 @@ private slots:
     void surfaceFormatChanged(const QVideoSurfaceFormat &format);
     void _q_updateLeftMediaObject();
     void _q_updateRightMediaObject();
+    void _q_updateVideoSurfaceFormat();
 
 private:
+    void _q_leftSurfaceStart(const QVideoSurfaceFormat& format);
     bool _q_presentLeftFrame(const QVideoFrame& frame);
+    void _q_leftSurfaceStop();
+    void _q_rightSurfaceStart(const QVideoSurfaceFormat& format);
     bool _q_presentRightFrame(const QVideoFrame& frame);
+    void _q_rightSurfaceStop();
 
     friend class QDeclarativeStereo3DVideoSurface;
 };
