@@ -8,24 +8,26 @@ ApplicationWindow {
     title: qsTr("Line by line")
 
     MediaPlayer {
-        id: mediaplayer
+        id: leftMediaplayer
+        source: "file:///home/pknopf/sample-video.mp4"
+        autoPlay: true
+    }
+
+    MediaPlayer {
+        id: rigthMediaplayer
         source: "file:///home/pknopf/sample-video.mp4"
         autoPlay: true
     }
 
     Stereo3DVideoOutput {
+        leftSource: leftMediaplayer
+        rightSource: rigthMediaplayer
         id: threeDMuxer
     }
 
     VideoOutput {
         anchors.fill: parent
         source: threeDMuxer
-        onHeightChanged: {
-            //console.log('height: ' + height)
-        }
-        onWidthChanged: {
-            //console.log('width: ' + width)
-        }
     }
 
     Component.onCompleted: {
